@@ -1,7 +1,7 @@
 [
   {
     "id": "placeholder-architect",
-    "image": "architects/placeholder-architect/portrait/portrait.jpg",
+    "image": "architects/placeholder-architect/portrait/portrait.svg",
     "fullName": "Placeholder Architect",
     "synopsis": "This is a placeholder template. To add a new architect, add their data as a new object in this JSON array. You will also need to manually create the corresponding folder structure for their portrait and project images.",
     "earlyLifeAndEducation": "Add information about the architect's early life and education here.",
@@ -24,8 +24,8 @@
         "buildingType": "Building Type",
         "primaryMaterials": [ "Material 1", "Material 2" ],
         "images": [
-            "architects/placeholder-architect/projects/placeholder-project/01.jpg",
-            "architects/placeholder-architect/projects/placeholder-project/02.jpg"
+            "architects/placeholder-architect/projects/placeholder-project/01.svg",
+            "architects/placeholder-architect/projects/placeholder-project/02.svg"
         ],
         "introductionAndContext": "To add a project, add its data to the 'notableProjects' array. Ensure you list all image paths explicitly in the 'images' array.",
         "conceptualFramework": "Describe the project's conceptual framework.",
