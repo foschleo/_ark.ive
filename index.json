@@ -1,0 +1,10 @@
+{
+  "architects": [
+    {
+      "id": "mies-van-der-rohe",
+      "fullName": "Ludwig Mies van der Rohe",
+      "image": "architects/mies-van-der-rohe/architect_image.jpg",
+      "file": "mies-van-der-rohe.json"
+    }
+  ]
+}

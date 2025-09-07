@@ -1,0 +1,41 @@
+[
+  {
+    "id": "placeholder-architect",
+    "image": "architects/placeholder-architect/portrait/portrait.jpg",
+    "fullName": "Placeholder Architect",
+    "synopsis": "This is a placeholder template. To add a new architect, add their data as a new object in this JSON array. You will also need to manually create the corresponding folder structure for their portrait and project images.",
+    "earlyLifeAndEducation": "Add information about the architect's early life and education here.",
+    "philosophicalApproachAndDesignPrinciples": {
+      "summary": "Describe the architect's core philosophy here.",
+      "principles": [
+        { "name": "Key Principle One", "description": "Describe the first design principle." },
+        { "name": "Key Principle Two", "description": "Describe the second design principle." }
+      ]
+    },
+    "keyMaterialsAndTectonicExpression": "Describe the key materials and tectonic expressions used by the architect.",
+    "influenceAndLegacy": "Describe the architect's influence and legacy.",
+    "notableProjects": [
+      {
+        "id": "placeholder-project",
+        "projectName": "Placeholder Project",
+        "architect": "Placeholder Architect",
+        "location": "City, Country",
+        "yearCompleted": 2024,
+        "buildingType": "Building Type",
+        "primaryMaterials": [ "Material 1", "Material 2" ],
+        "images": [
+            "architects/placeholder-architect/projects/placeholder-project/01.jpg",
+            "architects/placeholder-architect/projects/placeholder-project/02.jpg"
+        ],
+        "introductionAndContext": "To add a project, add its data to the 'notableProjects' array. Ensure you list all image paths explicitly in the 'images' array.",
+        "conceptualFramework": "Describe the project's conceptual framework.",
+        "architecturalAnalysis": {
+          "formAndStructure": "Analyze the form and structure.",
+          "materialityAndTectonics": "Analyze the materiality and tectonics.",
+          "lightAndSpace": "Analyze the use of light and space."
+        },
+        "significanceAndImpact": "Describe the project's significance and impact."
+      }
+    ]
+  }
+]
