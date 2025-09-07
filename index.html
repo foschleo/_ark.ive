@@ -200,7 +200,7 @@
             <p className="max-w-md mb-8 text-gray-700">
                 An error occurred while loading the collection.
             </p>
-            <p className="mt-4 text-red-600 bg-red-50 p-4 rounded-md border border-red-200 text-sm">
+            <p className="mt-4 text-red-600 bg-red-50 p-4 rounded-md border border-red-200 text-sm whitespace-pre-wrap">
                 <strong>Details:</strong> {error}
             </p>
         </div>
@@ -271,7 +271,11 @@
                     setAppStatus('ready');
                 } catch (e) {
                     console.error("Failed to load collection data:", e);
-                    setError(e.message);
+                    let errorMessage = e.message;
+                    if (e.message.includes('404')) {
+                        errorMessage += "\n\nThis usually means the 'data.json' file was not found. Please ensure it was uploaded to your project's root directory and the filename is spelled correctly in all lowercase.";
+                    }
+                    setError(errorMessage);
                     setAppStatus('error');
                 }
             };
