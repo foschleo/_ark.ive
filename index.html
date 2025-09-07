@@ -31,7 +31,6 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
@@ -262,7 +261,7 @@
         useEffect(() => {
             const loadData = async () => {
                 try {
-                    const response = await fetch('./data.json');
+                    const response = await fetch('/data.json');
                     if (!response.ok) {
                         throw new Error(`Failed to fetch data.json: ${response.status} ${response.statusText}`);
                     }
@@ -470,6 +469,5 @@
       root.render(<App />);
 
     </script>
-  <script type="module" src="/index.tsx"></script>
-</body>
+  </body>
 </html>
