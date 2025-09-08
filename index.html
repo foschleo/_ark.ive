@@ -39,6 +39,13 @@
         height: 100vh; /* Fallback for browsers that don't support CSS variables */
         height: calc(var(--vh, 1vh) * 100);
       }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
     </style>
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
@@ -404,44 +411,48 @@
                         </div>
 
                         {isSearching && (
-                            <div className="w-full max-w-4xl mx-auto flex-1 overflow-y-auto pb-16 px-4">
+                            <div className="w-full flex-1 flex flex-col">
                                 {architectsData.length > 0 ? (
-                                    <div>
-                                        {searchQuery.trim().length > 0 ? (
-                                            displayArchitects.length > 0 ? (
-                                                <div className="space-y-20 pt-12">
-                                                    {displayArchitects.map((arch, index) => (
+                                    searchQuery.trim().length > 0 ? (
+                                        displayArchitects.length > 0 ? (
+                                            <div className="w-full flex-1 snap-y snap-mandatory overflow-y-scroll no-scrollbar">
+                                                {displayArchitects.map((arch, index) => (
+                                                    <div
+                                                        key={arch.id}
+                                                        className="w-full h-full snap-start flex justify-center items-center"
+                                                    >
                                                         <div 
-                                                            key={arch.id} 
                                                             onClick={() => handleSelectArchitect(arch)} 
-                                                            className="cursor-pointer group text-center animate-fade-in"
+                                                            className="cursor-pointer group text-center animate-fade-in w-full max-w-sm px-4"
                                                             style={{ opacity: 0, animationDelay: `${index * 100}ms`, animationFillMode: 'forwards' }}
                                                         >
                                                             {arch.image ?
-                                                                <img src={arch.image} alt={`Portrait of ${arch.fullName}`} className="w-full max-w-lg mx-auto aspect-[4/5] object-cover rounded-sm shadow-lg transition-shadow duration-300 group-hover:shadow-xl" />
-                                                                : <div className="w-full max-w-lg mx-auto aspect-[4/5] bg-gray-100 flex items-center justify-center text-gray-400 text-xs rounded-sm shadow-lg">No Image</div>
+                                                                <img src={arch.image} alt={`Portrait of ${arch.fullName}`} className="w-full mx-auto aspect-[4/5] object-cover rounded-sm shadow-lg transition-shadow duration-300 group-hover:shadow-xl" />
+                                                                : <div className="w-full mx-auto aspect-[4/5] bg-gray-100 flex items-center justify-center text-gray-400 text-xs rounded-sm shadow-lg">No Image</div>
                                                             }
                                                             <p className="mt-6 text-base uppercase tracking-widest font-light text-gray-800 transition-colors duration-300 group-hover:text-black">{arch.fullName}</p>
                                                         </div>
-                                                    ))}
-                                                </div>
-                                            ) : (
-                                                <div className="text-center text-gray-500 pt-8">
-                                                    <p>No architects found matching your search.</p>
-                                                </div>
-                                            )
-                                        ) : (
-                                            <div className="text-center text-gray-400 pt-8">
-                                                <p>Begin typing to search the archive.</p>
+                                                    </div>
+                                                ))}
                                             </div>
-                                        )}
-                                    </div>
+                                        ) : (
+                                            <div className="w-full flex-1 flex justify-center items-center text-center text-gray-500">
+                                                <p>No architects found matching your search.</p>
+                                            </div>
+                                        )
+                                    ) : (
+                                        <div className="w-full flex-1 flex justify-center items-center text-center text-gray-400">
+                                            <p>Begin typing to search the archive.</p>
+                                        </div>
+                                    )
                                 ) : (
-                                    <div className="text-center text-gray-500 bg-gray-50 p-6 rounded-md border border-gray-200">
-                                        <h3 className="text-lg font-medium text-gray-800 mb-2">Your Collection is Empty</h3>
-                                        <p className="text-sm mt-2">
-                                           No architects found. Please ensure <code className="bg-gray-200 text-gray-700 px-1 py-0.5 rounded text-xs">'data.json'</code> is present and correctly formatted in the root directory.
-                                        </p>
+                                    <div className="w-full flex-1 flex justify-center items-center p-4">
+                                      <div className="text-center text-gray-500 bg-gray-50 p-6 rounded-md border border-gray-200 max-w-md">
+                                          <h3 className="text-lg font-medium text-gray-800 mb-2">Your Collection is Empty</h3>
+                                          <p className="text-sm mt-2">
+                                             No architects found. Please ensure <code className="bg-gray-200 text-gray-700 px-1 py-0.5 rounded text-xs">'data.json'</code> is present and correctly formatted in the root directory.
+                                          </p>
+                                      </div>
                                     </div>
                                 )}
                             </div>
