@@ -277,7 +277,7 @@
                     }
                     const data = await response.json();
                     setArchitectsData(data);
-                    setDisplayArchitects(data);
+                    // We no longer set displayArchitects here to support the new search behavior
                     setAppStatus('ready');
                 } catch (e) {
                     console.error("Failed to load collection data:", e);
@@ -295,7 +295,7 @@
 
         const handleSearch = () => {
             if (!searchQuery.trim()) {
-                setDisplayArchitects(architectsData);
+                setDisplayArchitects([]);
                 return;
             }
 
@@ -308,7 +308,7 @@
         const handleClearSearch = () => {
             setIsSearching(false);
             setSearchQuery('');
-            setDisplayArchitects(architectsData);
+            setDisplayArchitects([]);
         };
         
         const handleSelectArchitect = (architect) => {
@@ -338,7 +338,7 @@
             }`;
 
             return (
-                <div className="bg-[#FDFBF7] h-screen overflow-hidden relative p-8 md:p-12 text-black">
+                <div className="bg-[#FDFBF7] min-h-screen relative p-8 md:p-12 text-black">
                     {/* Top Left */}
                     <div className="absolute top-8 left-8 md:top-12 md:left-12 pl-3 border-l border-gray-300 text-xs uppercase tracking-wider text-left">
                         <p>Architecture</p><p>Design</p><p>&</p><p>Art</p>
@@ -351,7 +351,12 @@
                     <main className={mainClasses}>
                         <div 
                             className="font-lekton text-5xl md:text-7xl font-light tracking-widest uppercase text-center mb-12"
-                            onClick={() => { if (!isSearching) setIsSearching(true) }}
+                            onClick={() => { 
+                                if (!isSearching) {
+                                    setIsSearching(true);
+                                    setDisplayArchitects([]);
+                                }
+                             }}
                         >
                             {isSearching ? (
                                 <div className="flex items-center justify-center relative">
@@ -389,9 +394,11 @@
                                             </div>
                                         ))
                                     ) : (
-                                        <div className="col-span-full text-center text-gray-500">
-                                            <p>No architects found matching your search.</p>
-                                        </div>
+                                        searchQuery.trim().length > 0 && (
+                                            <div className="col-span-full text-center text-gray-500">
+                                                <p>No architects found matching your search.</p>
+                                            </div>
+                                        )
                                     )}
                                     </div>
                                 ) : (
