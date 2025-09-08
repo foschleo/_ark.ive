@@ -35,6 +35,10 @@
       .animate-fade-in {
         animation: fade-in 0.5s ease-out forwards;
       }
+      .h-screen-dynamic {
+        height: 100vh; /* Fallback for browsers that don't support CSS variables */
+        height: calc(var(--vh, 1vh) * 100);
+      }
     </style>
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
@@ -226,6 +230,16 @@
         const [displayArchitects, setDisplayArchitects] = useState([]);
         const searchInputRef = useRef(null);
         const sizerRef = useRef(null);
+        
+        useEffect(() => {
+            const setVh = () => {
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            };
+            window.addEventListener('resize', setVh);
+            setVh(); // Set on initial load and resize
+            return () => window.removeEventListener('resize', setVh);
+        }, []);
 
         useEffect(() => {
             if (isSearching) {
@@ -277,7 +291,7 @@
                     }
                     const data = await response.json();
                     setArchitectsData(data);
-                    // We no longer set displayArchitects here to support the new search behavior
+                    setDisplayArchitects(data);
                     setAppStatus('ready');
                 } catch (e) {
                     console.error("Failed to load collection data:", e);
@@ -295,7 +309,7 @@
 
         const handleSearch = () => {
             if (!searchQuery.trim()) {
-                setDisplayArchitects([]);
+                setDisplayArchitects(architectsData);
                 return;
             }
 
@@ -308,7 +322,7 @@
         const handleClearSearch = () => {
             setIsSearching(false);
             setSearchQuery('');
-            setDisplayArchitects([]);
+            setDisplayArchitects(architectsData);
         };
         
         const handleSelectArchitect = (architect) => {
@@ -338,7 +352,7 @@
             }`;
 
             return (
-                <div className="bg-[#FDFBF7] min-h-screen relative p-8 md:p-12 text-black">
+                <div className="bg-[#FDFBF7] h-screen-dynamic overflow-hidden relative p-8 md:p-12 text-black">
                     {/* Top Left */}
                     <div className="absolute top-8 left-8 md:top-12 md:left-12 pl-3 border-l border-gray-300 text-xs uppercase tracking-wider text-left">
                         <p>Architecture</p><p>Design</p><p>&</p><p>Art</p>
@@ -351,12 +365,7 @@
                     <main className={mainClasses}>
                         <div 
                             className="font-lekton text-5xl md:text-7xl font-light tracking-widest uppercase text-center mb-12"
-                            onClick={() => { 
-                                if (!isSearching) {
-                                    setIsSearching(true);
-                                    setDisplayArchitects([]);
-                                }
-                             }}
+                            onClick={() => { if (!isSearching) setIsSearching(true) }}
                         >
                             {isSearching ? (
                                 <div className="flex items-center justify-center relative">
@@ -394,11 +403,9 @@
                                             </div>
                                         ))
                                     ) : (
-                                        searchQuery.trim().length > 0 && (
-                                            <div className="col-span-full text-center text-gray-500">
-                                                <p>No architects found matching your search.</p>
-                                            </div>
-                                        )
+                                        <div className="col-span-full text-center text-gray-500">
+                                            <p>No architects found matching your search.</p>
+                                        </div>
                                     )}
                                     </div>
                                 ) : (
