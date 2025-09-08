@@ -404,19 +404,24 @@
                         </div>
 
                         {isSearching && (
-                            <div className="w-full max-w-2xl mx-auto flex-1 overflow-y-auto pb-8 animate-fade-in">
+                            <div className="w-full max-w-4xl mx-auto flex-1 overflow-y-auto pb-16 px-4">
                                 {architectsData.length > 0 ? (
                                     <div>
                                         {searchQuery.trim().length > 0 ? (
                                             displayArchitects.length > 0 ? (
-                                                <div>
-                                                    {displayArchitects.map(arch => (
-                                                        <div key={arch.id} onClick={() => handleSelectArchitect(arch)} className="cursor-pointer group flex items-center space-x-6 p-4 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors duration-200">
+                                                <div className="space-y-20 pt-12">
+                                                    {displayArchitects.map((arch, index) => (
+                                                        <div 
+                                                            key={arch.id} 
+                                                            onClick={() => handleSelectArchitect(arch)} 
+                                                            className="cursor-pointer group text-center animate-fade-in"
+                                                            style={{ opacity: 0, animationDelay: `${index * 100}ms`, animationFillMode: 'forwards' }}
+                                                        >
                                                             {arch.image ?
-                                                                <img src={arch.image} alt={`Portrait of ${arch.fullName}`} className="w-16 h-16 object-cover rounded-sm flex-shrink-0" />
-                                                                : <div className="w-16 h-16 bg-gray-100 flex items-center justify-center text-gray-400 text-xs rounded-sm flex-shrink-0">No Image</div>
+                                                                <img src={arch.image} alt={`Portrait of ${arch.fullName}`} className="w-full max-w-lg mx-auto aspect-[4/5] object-cover rounded-sm shadow-lg transition-shadow duration-300 group-hover:shadow-xl" />
+                                                                : <div className="w-full max-w-lg mx-auto aspect-[4/5] bg-gray-100 flex items-center justify-center text-gray-400 text-xs rounded-sm shadow-lg">No Image</div>
                                                             }
-                                                            <p className="text-base uppercase tracking-wider group-hover:text-black text-gray-700">{arch.fullName}</p>
+                                                            <p className="mt-6 text-base uppercase tracking-widest font-light text-gray-800 transition-colors duration-300 group-hover:text-black">{arch.fullName}</p>
                                                         </div>
                                                     ))}
                                                 </div>
