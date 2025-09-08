@@ -385,7 +385,7 @@
                     {/* Main Content Area */}
                     <main className={mainClasses}>
                         <div 
-                            className={`font-lekton font-light tracking-widest uppercase text-center transition-all duration-500 ease-in-out ${isSearching ? 'text-2xl mb-8' : 'text-5xl md:text-7xl mb-12'}`}
+                            className={`font-lekton font-light tracking-widest uppercase text-center transition-all duration-500 ease-in-out ${isSearching ? 'text-xl md:text-2xl mb-6 md:mb-8' : 'text-5xl md:text-7xl mb-12'}`}
                             onClick={() => { if (!isSearching) setIsSearching(true) }}
                         >
                             {isSearching ? (
@@ -423,14 +423,14 @@
                                                     >
                                                         <div 
                                                             onClick={() => handleSelectArchitect(arch)} 
-                                                            className="cursor-pointer group text-center animate-fade-in w-full max-w-sm px-4"
+                                                            className="cursor-pointer group text-center animate-fade-in w-full max-w-xs sm:max-w-sm px-4"
                                                             style={{ opacity: 0, animationDelay: `${index * 100}ms`, animationFillMode: 'forwards' }}
                                                         >
                                                             {arch.image ?
                                                                 <img src={arch.image} alt={`Portrait of ${arch.fullName}`} className="w-full mx-auto aspect-[4/5] object-cover rounded-sm shadow-lg transition-shadow duration-300 group-hover:shadow-xl" />
                                                                 : <div className="w-full mx-auto aspect-[4/5] bg-gray-100 flex items-center justify-center text-gray-400 text-xs rounded-sm shadow-lg">No Image</div>
                                                             }
-                                                            <p className="mt-6 text-base uppercase tracking-widest font-light text-gray-800 transition-colors duration-300 group-hover:text-black">{arch.fullName}</p>
+                                                            <p className="mt-4 md:mt-6 text-sm md:text-base uppercase tracking-widest font-light text-gray-800 transition-colors duration-300 group-hover:text-black">{arch.fullName}</p>
                                                         </div>
                                                     </div>
                                                 ))}
