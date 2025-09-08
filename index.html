@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,6 +13,7 @@
       body {
         font-family: 'Inter', sans-serif;
         background-color: #FDFBF7; /* Off-White */
+        margin: 0; /* Ensures true centering */
       }
       .font-lekton {
         font-family: 'Lekton', monospace;
@@ -116,366 +118,226 @@
         );
 
         return (
-          <div className="w-full">
-            <h3 className="font-medium mb-8 text-center uppercase tracking-wider">Notable Projects</h3>
-            <div className="w-full mb-4 flex justify-between items-center">
-                <div className="flex items-center space-x-2">
-                  {projectsData.map((project, index) => (
-                    <button
-                      key={project.id}
-                      onClick={() => handleProjectChange(index)}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${currentProjectIndex === index ? 'bg-black scale-125' : 'bg-gray-300 hover:bg-gray-400'}`}
-                      aria-label={`Select ${project.projectName}`}
-                    />
-                  ))}
-                </div>
-            </div>
-            <div className="w-full mb-4 text-left">
-              <p className="text-sm font-normal tracking-wider uppercase">{activeProject.projectName}</p>
-            </div>
-            <div className="w-full h-[55vh] overflow-hidden bg-gray-100 flex justify-center items-center">
-              {hasImages ? (
-                <div className={`flex h-full w-full ${transitionEnabled ? 'transition-transform duration-700 ease-in-out' : ''}`} style={{ transform: `translateX(-${currentImageIndex * 100}%)` }} onClick={handleNextImage}>
-                  {slides.map((src, index) => <img key={`${activeProject.id}-${index}`} src={src} alt={`Image ${index + 1} of ${activeProject.projectName}`} className="w-full h-full object-cover flex-shrink-0" draggable="false"/>)}
-                </div>
-              ) : (
-                <p className="text-gray-500">No images provided for this project.</p>
-              )}
-            </div>
-            {hasImages && <button onClick={handleNextImage} className="text-sm font-light mt-4" aria-label={`Next image, showing ${displayIndex + 1} of ${activeProject.images.length}`}>{String(displayIndex + 1).padStart(2, '0')}/{String(activeProject.images.length).padStart(2, '0')}</button>}
-            
-            <div className="mt-16 space-y-12">
-                <dl>
-                    <AttributeRow label="Architect" value={activeProject.architect} />
-                    <AttributeRow label="Location" value={activeProject.location} />
-                    <AttributeRow label="Year Completed" value={activeProject.yearCompleted} />
-                    <AttributeRow label="Building Type" value={activeProject.buildingType} />
-                    <AttributeRow label="Primary Materials" value={Array.isArray(activeProject.primaryMaterials) ? activeProject.primaryMaterials.join(', ') : activeProject.primaryMaterials} />
-                </dl>
-
-                <ProjectTextSection title="1. Introduction and Context" content={activeProject.introductionAndContext} />
-                <ProjectTextSection title="2. Conceptual Framework" content={activeProject.conceptualFramework} />
-
-                <div>
-                    <h3 className="font-medium text-lg mb-4">3. Architectural Analysis</h3>
-                    <div className="pl-4 border-l-2 border-gray-200 space-y-6">
-                        <ProjectTextSection title="Form and Structure" content={activeProject.architecturalAnalysis.formAndStructure} sub={true} />
-                        <ProjectTextSection title="Materiality and Tectonics" content={activeProject.architecturalAnalysis.materialityAndTectonics} sub={true} />
-                        <ProjectTextSection title="Light and Space" content={activeProject.architecturalAnalysis.lightAndSpace} sub={true} />
+            <div className="mt-12 md:mt-20">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                    <div className="md:col-span-2">
+                        <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden cursor-pointer" onClick={handleNextImage}>
+                            <div className="absolute top-0 left-0 w-full h-full flex" 
+                                style={{ 
+                                    transform: `translateX(-${currentImageIndex * 100}%)`,
+                                    transition: transitionEnabled ? `transform ${transitionDuration}ms ease-in-out` : 'none'
+                                }}>
+                                {slides.map((img, index) => (
+                                    <img key={index} src={img} alt={`${activeProject.projectName} image ${index}`} className="w-full h-full object-cover flex-shrink-0"/>
+                                ))}
+                            </div>
+                            {hasImages && activeProject.images.length > 1 && (
+                                <div className="absolute bottom-4 right-4 text-xs font-mono bg-black bg-opacity-50 text-white px-2 py-1 rounded">
+                                    {`${displayIndex + 1} / ${activeProject.images.length}`}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div>
+                        <h2 className="text-2xl font-medium mb-4">{activeProject.projectName}</h2>
+                        <dl>
+                            <AttributeRow label="Architect" value={activeProject.architect} />
+                            <AttributeRow label="Location" value={activeProject.location} />
+                            <AttributeRow label="Completed" value={activeProject.yearCompleted} />
+                            <AttributeRow label="Type" value={activeProject.buildingType} />
+                            <AttributeRow label="Materials" value={activeProject.primaryMaterials.join(', ')} />
+                        </dl>
+                        <div className="mt-6 text-sm">
+                            <p className="font-light leading-relaxed text-gray-600">{activeProject.introductionAndContext}</p>
+                        </div>
                     </div>
                 </div>
 
-                <ProjectTextSection title="4. Significance and Impact" content={activeProject.significanceAndImpact} />
-            </div>
+                <div className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                    <div>
+                        <ProjectTextSection title="Conceptual Framework" content={activeProject.conceptualFramework} />
+                        <ProjectTextSection title="Significance & Impact" content={activeProject.significanceAndImpact} />
+                    </div>
+                    <div>
+                        <ProjectTextSection title="Architectural Analysis" content={null}>
+                            <ProjectTextSection title="Form & Structure" content={activeProject.architecturalAnalysis.formAndStructure} sub={true} />
+                            <ProjectTextSection title="Materiality & Tectonics" content={activeProject.architecturalAnalysis.materialityAndTectonics} sub={true} />
+                            <ProjectTextSection title="Light & Space" content={activeProject.architecturalAnalysis.lightAndSpace} sub={true} />
+                        </ProjectTextSection>
+                    </div>
+                </div>
 
-          </div>
-        );
-      };
-      
-      const TextSection = ({title, content}) => (
-        <div className="mb-12">
-          <h3 className="font-medium mb-2">{title}</h3>
-          <p className="text-sm font-light leading-relaxed text-gray-600 whitespace-pre-wrap">{content}</p>
-        </div>
-      );
-
-       const PhilosophySection = ({ data }) => {
-        if (!data) return null;
-        return (
-            <div className="mb-12">
-                <h3 className="font-medium mb-2">Philosophical Approach and Design Principles</h3>
-                <p className="text-sm font-light leading-relaxed text-gray-600 whitespace-pre-wrap mb-6">{data.summary}</p>
-                <div className="pl-4 border-l-2 border-gray-200 space-y-4">
-                    {data.principles.map((principle, index) => (
-                        <div key={index}>
-                            <h4 className="font-medium text-gray-800">{principle.name}</h4>
-                            <p className="text-sm font-light leading-relaxed text-gray-600 whitespace-pre-wrap">{principle.description}</p>
+                {projectsData.length > 1 && (
+                    <div className="mt-8 border-t border-gray-200 pt-4">
+                        <h4 className="text-sm font-medium text-gray-500 mb-3">Other Projects</h4>
+                        <div className="flex flex-wrap gap-x-6 gap-y-2">
+                            {projectsData.map((project, index) => (
+                                <button
+                                    key={project.id}
+                                    onClick={() => handleProjectChange(index)}
+                                    className={`text-sm transition-colors ${currentProjectIndex === index ? 'font-medium text-gray-900' : 'font-light text-gray-500 hover:text-gray-800'}`}
+                                >
+                                    {project.projectName}
+                                </button>
+                            ))}
                         </div>
+                    </div>
+                )}
+            </div>
+        )
+    };
+
+      const ArchitectPage = ({ architect, onBack }) => (
+        <div className="max-w-5xl mx-auto px-4 py-8 md:py-12 animate-fade-in">
+          <header className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            <div className="w-full aspect-[4/5] bg-gray-100">
+                <img src={architect.image} alt={`Portrait of ${architect.fullName}`} className="w-full h-full object-cover" />
+            </div>
+            <div className="md:col-span-2">
+                <h1 className="text-4xl md:text-5xl font-bold mb-4">{architect.fullName}</h1>
+                <p className="text-base font-light leading-relaxed text-gray-600">{architect.synopsis}</p>
+            </div>
+          </header>
+          
+          <main className="mt-12 md:mt-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <div>
+                    <ProjectTextSection title="Early Life & Education" content={architect.earlyLifeAndEducation} />
+                    <ProjectTextSection title="Key Materials & Tectonic Expression" content={architect.keyMaterialsAndTectonicExpression} />
+                </div>
+                <div>
+                    <ProjectTextSection title="Philosophical Approach" content={architect.philosophicalApproachAndDesignPrinciples.summary} />
+                    {architect.philosophicalApproachAndDesignPrinciples.principles.map(p => (
+                        <ProjectTextSection key={p.name} title={p.name} content={p.description} sub={true} />
                     ))}
                 </div>
             </div>
-        );
-       };
-       
-      const LoadingScreen = ({ text }) => (
-        <div className="bg-[#FDFBF7] text-black min-h-screen flex justify-center items-center text-lg"><p>{text}</p></div>
-      );
-      
-      const ErrorScreen = ({ error }) => (
-        <div className="bg-[#FDFBF7] min-h-screen flex flex-col items-center justify-center p-8 text-center">
-            <h1 className="font-lekton text-5xl md:text-7xl font-light tracking-widest uppercase mb-8 text-center text-red-700">Error</h1>
-            <p className="max-w-md mb-8 text-gray-700">
-                An error occurred while loading the collection.
-            </p>
-            <p className="mt-4 text-red-600 bg-red-50 p-4 rounded-md border border-red-200 text-sm whitespace-pre-wrap">
-                <strong>Details:</strong> {error}
-            </p>
+            <div className="mt-8 md:mt-12">
+                 <ProjectTextSection title="Influence & Legacy" content={architect.influenceAndLegacy} />
+            </div>
+
+            <ProjectShowcase projectsData={architect.notableProjects} />
+          </main>
+
+          <footer className="w-full mt-16 py-4">
+              <div className="max-w-5xl mx-auto flex justify-between items-center">
+                   <button onClick={onBack} className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                      Back to Collection
+                  </button>
+                  <h2 className="font-lekton text-xl text-gray-800">
+                      <span className="blink">_</span>ark.ive
+                  </h2>
+              </div>
+          </footer>
         </div>
       );
 
-      // --- Main App Component ---
-      const App = () => {
-        const [appStatus, setAppStatus] = useState('loading'); // 'loading', 'ready', 'error'
-        const [error, setError] = useState(null);
-        const [architectsData, setArchitectsData] = useState([]);
-        const [selectedArchitect, setSelectedArchitect] = useState(null);
-        const [view, setView] = useState('collection');
-        const [isSearching, setIsSearching] = useState(false);
-        const [searchQuery, setSearchQuery] = useState('');
-        const [displayArchitects, setDisplayArchitects] = useState([]);
-        const searchInputRef = useRef(null);
-        const sizerRef = useRef(null);
+      const SearchInput = ({ value, onChange, onExit }) => {
+        const inputRef = useRef(null);
 
         useEffect(() => {
-            if (isSearching) {
-                searchInputRef.current?.focus();
-            }
-        }, [isSearching]);
-        
-         useEffect(() => {
-            if (isSearching && searchInputRef.current && sizerRef.current) {
-                // Add a small buffer for the cursor
-                const newWidth = sizerRef.current.offsetWidth + 2;
-                searchInputRef.current.style.width = `${newWidth}px`;
-            } else if (searchInputRef.current) {
-                searchInputRef.current.style.width = '0px';
-            }
-        }, [searchQuery, isSearching]);
-
-        useEffect(() => {
-          const searchDebounce = setTimeout(() => {
-            if (isSearching) {
-                handleSearch();
-            }
-          }, 200); // Debounce search to avoid excessive re-renders
+          inputRef.current?.focus();
           
-          return () => clearTimeout(searchDebounce);
-        }, [searchQuery, isSearching]);
-
-        useEffect(() => {
-            const handleGlobalKeyDown = (e) => {
-                 if (e.key === 'Escape') {
-                    handleClearSearch();
-                    return;
-                }
-            };
-
-            window.addEventListener('keydown', handleGlobalKeyDown);
-            return () => {
-                window.removeEventListener('keydown', handleGlobalKeyDown);
-            };
-        }, []);
-
-        // Load data on initial render
-        useEffect(() => {
-            const loadData = async () => {
-                try {
-                    const response = await fetch('./data.json');
-                    if (!response.ok) {
-                        throw new Error(`Failed to fetch data.json: ${response.status} ${response.statusText}`);
-                    }
-                    const data = await response.json();
-                    setArchitectsData(data);
-                    setDisplayArchitects(data);
-                    setAppStatus('ready');
-                } catch (e) {
-                    console.error("Failed to load collection data:", e);
-                    let errorMessage = e.message;
-                    if (e.message.includes('404')) {
-                        errorMessage += "\n\nThis usually means the 'data.json' file was not found. Please ensure it was uploaded to your project's root directory and the filename is spelled correctly in all lowercase.";
-                    }
-                    setError(errorMessage);
-                    setAppStatus('error');
-                }
-            };
-            loadData();
-        }, []);
-
-
-        const handleSearch = () => {
-            if (!searchQuery.trim()) {
-                setDisplayArchitects(architectsData);
-                return;
+          const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+              onExit();
             }
+          };
 
-            const results = architectsData.filter(arch => 
-                arch.fullName.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-            setDisplayArchitects(results);
-        };
+          window.addEventListener('keydown', handleKeyDown);
+          return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+          };
+        }, [onExit]);
         
-        const handleClearSearch = () => {
-            setIsSearching(false);
-            setSearchQuery('');
-            setDisplayArchitects(architectsData);
-        };
-        
-        const handleSelectArchitect = (architect) => {
-            setSelectedArchitect(architect);
-            setView('architect');
-        };
-
-        const handleBackToCollection = () => {
-            setSelectedArchitect(null);
-            setView('collection');
-            handleClearSearch();
-        }
-        
-        if (appStatus === 'error') {
-            return <ErrorScreen error={error} />;
-        }
-        
-        if (appStatus === 'loading') {
-            return <LoadingScreen text="Loading architectural collection..." />;
-        }
-        
-        if (appStatus === 'ready' && view === 'collection') {
-            const mainClasses = `absolute inset-0 flex flex-col items-center p-8 ${
-                isSearching 
-                    ? 'justify-start pt-24 md:justify-center md:pt-8' 
-                    : 'justify-center'
-            }`;
-
-            return (
-                <div className="bg-[#FDFBF7] min-h-screen relative p-8 md:p-12 text-black">
-                    {/* Top Left */}
-                    <div className="absolute top-8 left-8 md:top-12 md:left-12 pl-3 border-l border-gray-300 text-xs uppercase tracking-wider text-left">
-                        <p>Architecture</p><p>Design</p><p>&</p><p>Art</p>
-                    </div>
-                    
-                    {/* Top Right */}
-                    <div className="absolute top-8 right-8 md:top-12 md:right-12 w-5 h-5 border-t border-r border-gray-300"></div>
-                    
-                    {/* Main Content Area */}
-                    <main className={mainClasses}>
-                        <div 
-                            className="font-lekton text-5xl md:text-7xl font-light tracking-widest uppercase text-center mb-12"
-                            onClick={() => { if (!isSearching) setIsSearching(true) }}
-                        >
-                            {isSearching ? (
-                                <div className="flex items-center justify-center relative">
-                                    <span className="blink">_</span>
-                                    <input
-                                        ref={searchInputRef}
-                                        type="text"
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        className="bg-transparent outline-none p-0 border-0 text-left text-5xl md:text-7xl font-light"
-                                        style={{ caretColor: 'transparent', width: '0px' }}
-                                    />
-                                    {/* Sizer element for width calculation */}
-                                    <div ref={sizerRef} className="absolute top-0 left-0 invisible whitespace-pre -z-10 text-5xl md:text-7xl font-light">{searchQuery}</div>
-                                </div>
-                            ) : (
-                                <h2 className="cursor-pointer">
-                                    <span className="blink">_</span>ark<span>.</span>ive
-                                </h2>
-                            )}
-                        </div>
-
-                        {isSearching && (
-                            <div className="w-full max-w-7xl px-8 md:px-12 animate-fade-in">
-                                {architectsData.length > 0 ? (
-                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
-                                    {displayArchitects.length > 0 ? (
-                                        displayArchitects.map(arch => (
-                                            <div key={arch.id} onClick={() => handleSelectArchitect(arch)} className="cursor-pointer group">
-                                                {arch.image ?
-                                                    <img src={arch.image} alt={`Portrait of ${arch.fullName}`} className="w-full aspect-square object-cover transition-all duration-300 group-hover:grayscale group-hover:opacity-80" />
-                                                    : <div className="w-full aspect-square bg-gray-100 flex items-center justify-center text-gray-400 text-sm">No Image</div>
-                                                }
-                                                <p className="text-center mt-2 text-sm uppercase tracking-wider">{arch.fullName}</p>
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <div className="col-span-full text-center text-gray-500">
-                                            <p>No architects found matching your search.</p>
-                                        </div>
-                                    )}
-                                    </div>
-                                ) : (
-                                    <div className="text-center text-gray-500 bg-gray-50 p-6 rounded-md border border-gray-200">
-                                        <h3 className="text-lg font-medium text-gray-800 mb-2">Your Collection is Empty</h3>
-                                        <p className="text-sm mt-2">
-                                           No architects found. Please ensure <code className="bg-gray-200 text-gray-700 px-1 py-0.5 rounded text-xs">'data.json'</code> is present and correctly formatted in the root directory.
-                                        </p>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </main>
-
-                    {/* Bottom Left */}
-                    <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 w-5 h-5 border-b border-l border-gray-300"></div>
-                </div>
-            );
-        }
-        
-        if (appStatus === 'ready' && view === 'architect') {
-            if (!selectedArchitect) {
-                 return <ErrorScreen error={"Selected architect data is missing."} />;
-            }
-
-            return (
-              <div className="bg-[#FDFBF7] min-h-screen flex flex-col items-center p-8 md:p-12 text-black">
-                <div className="w-full max-w-7xl">
-                  <header className="relative flex justify-between items-start text-xs uppercase tracking-wider">
-                    <button onClick={handleBackToCollection} className="pl-3 border-l border-gray-300 text-xs uppercase tracking-wider text-left hover:text-gray-500 transition-colors">
-                      &lt; Back to Collection
-                    </button>
-                    <div className="w-5 h-5 border-t border-r border-gray-300"></div>
-                  </header>
-                  
-                  <main className="w-full my-16 md:my-24">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-16">
-                      <div className="md:col-span-1">
-                        {selectedArchitect.image ? 
-                          <img src={selectedArchitect.image} alt={`Portrait of ${selectedArchitect.fullName}`} className="w-full aspect-square object-cover"/>
-                          : <div className="w-full aspect-square bg-gray-100 flex items-center justify-center text-gray-400 text-sm">Image not found</div>
-                        }
-                      </div>
-                      <div className="md:col-span-2">
-                        <h2 className="text-3xl lg:text-4xl font-light mb-4">{selectedArchitect.fullName}</h2>
-                         <TextSection title="Synopsis" content={selectedArchitect.synopsis} />
-                      </div>
-                    </div>
-
-                    <TextSection title="Early Life and Education" content={selectedArchitect.earlyLifeAndEducation} />
-                    <PhilosophySection data={selectedArchitect.philosophicalApproachAndDesignPrinciples} />
-                    <TextSection title="Key Materials and Tectonic Expression" content={selectedArchitect.keyMaterialsAndTectonicExpression} />
-                    
-                    <div className="my-16 border-t border-gray-200"></div>
-                    
-                    {selectedArchitect.notableProjects && selectedArchitect.notableProjects.length > 0 ? 
-                        <ProjectShowcase projectsData={selectedArchitect.notableProjects} />
-                        : <p className="text-center text-gray-500">No projects found for this architect.</p>
-                    }
-                    
-                    <div className="my-16 border-t border-gray-200"></div>
-                    
-                    <TextSection title="Influence and Legacy" content={selectedArchitect.influenceAndLegacy} />
-                  </main>
-                  
-                  <footer className="w-full mt-16">
-                      <div className="flex justify-between items-end">
-                          <div className="w-5 h-5 border-b border-l border-gray-300"></div>
-                          <h1 className="font-lekton text-xl font-light tracking-widest uppercase text-gray-500">
-                             <span className="blink">_</span>ark<span>.</span>ive
-                          </h1>
-                      </div>
-                  </footer>
-
-                </div>
-              </div>
-            );
-        }
-
-        return null;
+        return (
+          <div className="font-lekton text-2xl md:text-3xl text-gray-500 flex items-center border-b border-gray-400 pb-2">
+            <span className="text-gray-800 mr-2"><span className="blink">_</span></span>
+            <span className="text-gray-400 mr-4 select-none">Search</span>
+            <span className="h-6 w-px bg-gray-400 mr-4"></span>
+            <input
+              ref={inputRef}
+              type="text"
+              value={value}
+              onChange={onChange}
+              className="bg-transparent w-full outline-none text-gray-800 placeholder-gray-400 font-lekton"
+              placeholder="architect"
+            />
+          </div>
+        );
       };
 
-      const root = ReactDOM.createRoot(document.getElementById('root'));
-      root.render(<App />);
+      const CollectionContainer = ({ onSelectArchitect, architects }) => {
+        const [isSearching, setIsSearching] = useState(false);
+        const [query, setQuery] = useState('');
 
+        const handleSearchChange = (e) => {
+          setQuery(e.target.value);
+        };
+
+        const filteredArchitects = architects.filter(arch => 
+          arch.fullName.toLowerCase().includes(query.toLowerCase())
+        );
+
+        return (
+          <div className="relative min-h-screen">
+            <div id="collection-container" className={`min-h-screen flex flex-col p-4 transition-all duration-500 ease-in-out ${isSearching ? 'justify-start md:justify-center' : 'justify-center'}`}>
+                <div id="search-wrapper" className={`w-full max-w-lg mx-auto transition-all duration-500 ease-in-out ${isSearching ? 'mt-0 mb-8 md:mt-0 md:mb-12' : 'my-4'}`}>
+                {isSearching ? (
+                    <SearchInput value={query} onChange={handleSearchChange} onExit={() => setIsSearching(false)} />
+                ) : (
+                    <h1 onClick={() => setIsSearching(true)} className="font-lekton text-5xl md:text-6xl text-gray-800 cursor-pointer text-center">
+                        <span className="blink">_</span>ark.ive
+                    </h1>
+                )}
+                </div>
+
+                {isSearching && (
+                  <div id="architects-grid" className="w-full max-w-4xl mx-auto animate-fade-in">
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                          {(query ? filteredArchitects : architects).map(arch => (
+                              <div key={arch.id} onClick={() => onSelectArchitect(arch)} className="cursor-pointer group">
+                                  <div className="aspect-[4/5] bg-gray-200 overflow-hidden">
+                                      <img src={arch.image} alt={arch.fullName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                  </div>
+                                  <h3 className="mt-2 text-sm md:text-base font-medium text-gray-800">{arch.fullName}</h3>
+                              </div>
+                          ))}
+                      </div>
+                  </div>
+                )}
+            </div>
+            <div className="absolute bottom-4 right-4 font-lekton text-xl text-gray-800">
+                <span className="blink">_</span>ark.ive
+            </div>
+          </div>
+        );
+      };
+
+
+      const App = () => {
+        const [architects, setArchitects] = useState([]);
+        const [selectedArchitect, setSelectedArchitect] = useState(null);
+
+        useEffect(() => {
+          fetch('./data.json')
+            .then(response => response.json())
+            .then(data => {
+              setArchitects(data);
+            })
+            .catch(error => console.error('Error loading architect data:', error));
+        }, []);
+
+        if (selectedArchitect) {
+          return <ArchitectPage architect={selectedArchitect} onBack={() => setSelectedArchitect(null)} />;
+        }
+
+        return <CollectionContainer onSelectArchitect={setSelectedArchitect} architects={architects} />;
+      };
+
+      const container = document.getElementById('root');
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
     </script>
   </body>
 </html>
