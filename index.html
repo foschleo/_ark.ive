@@ -37,40 +37,6 @@
     <script type="text/babel">
       const { useState, useEffect, useRef } = React;
 
-      // --- Reusable Image Component with Error Handling ---
-      const ImageWithFallback = ({ src, alt, className, draggable = "false" }) => {
-        const [error, setError] = useState(false);
-
-        useEffect(() => {
-            setError(false);
-        }, [src]);
-
-        const handleError = () => {
-            setError(true);
-            console.error(`Image load error: The browser failed to load the image from the path: ${src}. Please check if the file exists at this path, and that the path is spelled correctly (it is case-sensitive).`);
-        };
-
-        if (error || !src) {
-            const errorMessage = !src ? "No image path provided." : "Image failed to load.";
-            return (
-                <div className={`${className} bg-gray-100 flex flex-col items-center justify-center text-gray-400 text-xs text-center p-2`}>
-                    <p>{errorMessage}</p>
-                    {src && <p className="font-mono mt-1 break-all">{src}</p>}
-                </div>
-            );
-        }
-
-        return (
-            <img 
-                src={src} 
-                alt={alt} 
-                className={className}
-                onError={handleError}
-                draggable={draggable}
-            />
-        );
-      };
-
       // --- UI Components ---
       const ProjectTextSection = ({title, content, sub = false}) => (
         <div className="mb-8">
@@ -163,15 +129,7 @@
             <div className="w-full h-[55vh] overflow-hidden bg-gray-100 flex justify-center items-center">
               {hasImages ? (
                 <div className={`flex h-full w-full ${transitionEnabled ? 'transition-transform duration-700 ease-in-out' : ''}`} style={{ transform: `translateX(-${currentImageIndex * 100}%)` }} onClick={handleNextImage}>
-                  {slides.map((src, index) => 
-                    <ImageWithFallback 
-                        key={`${activeProject.id}-${index}`} 
-                        src={src} 
-                        alt={`Image ${index + 1} of ${activeProject.projectName}`} 
-                        className="w-full h-full object-cover flex-shrink-0" 
-                        draggable="false"
-                    />
-                  )}
+                  {slides.map((src, index) => <img key={`${activeProject.id}-${index}`} src={src} alt={`Image ${index + 1} of ${activeProject.projectName}`} className="w-full h-full object-cover flex-shrink-0" draggable="false"/>)}
                 </div>
               ) : (
                 <p className="text-gray-500">No images provided for this project.</p>
@@ -389,11 +347,10 @@
                                 {displayArchitects.length > 0 ? (
                                     displayArchitects.map(arch => (
                                         <div key={arch.id} onClick={() => handleSelectArchitect(arch)} className="cursor-pointer group">
-                                            <ImageWithFallback 
-                                                src={arch.image} 
-                                                alt={`Portrait of ${arch.fullName}`} 
-                                                className="w-full aspect-square object-cover transition-all duration-300 group-hover:grayscale group-hover:opacity-80" 
-                                            />
+                                            {arch.image ?
+                                                <img src={arch.image} alt={`Portrait of ${arch.fullName}`} className="w-full aspect-square object-cover transition-all duration-300 group-hover:grayscale group-hover:opacity-80" />
+                                                : <div className="w-full aspect-square bg-gray-100 flex items-center justify-center text-gray-400 text-sm">No Image</div>
+                                            }
                                             <p className="text-center mt-2 text-sm uppercase tracking-wider">{arch.fullName}</p>
                                         </div>
                                     ))
@@ -464,11 +421,10 @@
                   <main className="w-full my-16 md:my-24">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-16">
                       <div className="md:col-span-1">
-                        <ImageWithFallback 
-                            src={selectedArchitect.image} 
-                            alt={`Portrait of ${selectedArchitect.fullName}`} 
-                            className="w-full aspect-square object-cover"
-                        />
+                        {selectedArchitect.image ? 
+                          <img src={selectedArchitect.image} alt={`Portrait of ${selectedArchitect.fullName}`} className="w-full aspect-square object-cover"/>
+                          : <div className="w-full aspect-square bg-gray-100 flex items-center justify-center text-gray-400 text-sm">Image not found</div>
+                        }
                       </div>
                       <div className="md:col-span-2">
                         <h2 className="text-3xl lg:text-4xl font-light mb-4">{selectedArchitect.fullName}</h2>
