@@ -1,40 +1,62 @@
 [
   {
-    "id": "placeholder-architect",
-    "image": "https://placehold.co/600x600/efefef/333?text=Portrait",
-    "fullName": "Placeholder Architect",
-    "synopsis": "This is a placeholder template. To add a new architect, add their data as a new object in this JSON array. You will also need to manually create the corresponding folder structure for their portrait and project images.",
-    "earlyLifeAndEducation": "Add information about the architect's early life and education here.",
+    "id": "mies-van-der-rohe",
+    "image": "/images/mies-van-der-rohe/portrait.jpg",
+    "fullName": "Mies van der Rohe",
+    "synopsis": "Ludwig Mies van der Rohe was a German-American architect. He was commonly referred to as Mies, his surname. Along with Alvar Aalto, Le Corbusier, Walter Gropius and Frank Lloyd Wright, he is regarded as one of the pioneers of modernist architecture.",
+    "earlyLifeAndEducation": "Born in Aachen, Germany, Mies worked in his father's stone-carving shop before moving to Berlin where he joined the office of interior designer Bruno Paul. He began his architectural career as an apprentice at the studio of Peter Behrens, from 1908 to 1912, where he was exposed to the latest design theories and to progressive German culture.",
     "philosophicalApproachAndDesignPrinciples": {
-      "summary": "Describe the architect's core philosophy here.",
+      "summary": "Mies sought to establish a new architectural style that could represent modern times just as Classical and Gothic did for their own eras. He created an influential twentieth-century architectural style, stated with extreme clarity and simplicity. His mature buildings made use of modern materials such as industrial steel and plate glass to define interior spaces.",
       "principles": [
-        { "name": "Key Principle One", "description": "Describe the first design principle." },
-        { "name": "Key Principle Two", "description": "Describe the second design principle." }
+        { "name": "Less is More", "description": "This famous aphorism encapsulates his minimalist approach, focusing on essential elements and removing ornamentation to reveal the pure form and structure of a building." },
+        { "name": "Skin and Bones Architecture", "description": "He emphasized a clear distinction between the structural frame ('bones') and the enclosing, non-structural curtain wall ('skin'). This allowed for unprecedented openness and flexibility in spatial planning." }
       ]
     },
-    "keyMaterialsAndTectonicExpression": "Describe the key materials and tectonic expressions used by the architect.",
-    "influenceAndLegacy": "Describe the architect's influence and legacy.",
+    "keyMaterialsAndTectonicExpression": "Mies is known for his masterful use of industrial materials, including steel, glass, and concrete. His tectonic expression is one of precision and refinement, where the connections and joints of materials are honestly expressed and celebrated as part of the architectural aesthetic.",
+    "influenceAndLegacy": "Mies van der Rohe's influence is immense. His work helped define the modern city skyline with the rise of the glass-and-steel skyscraper. His minimalist aesthetic continues to be a major force in architecture and design, and he remains one of the most studied and revered architects of the 20th century.",
     "notableProjects": [
       {
-        "id": "placeholder-project",
-        "projectName": "Placeholder Project",
-        "architect": "Placeholder Architect",
-        "location": "City, Country",
-        "yearCompleted": 2024,
-        "buildingType": "Building Type",
-        "primaryMaterials": [ "Material 1", "Material 2" ],
+        "id": "farnsworth-house",
+        "projectName": "Farnsworth House",
+        "architect": "Mies van der Rohe",
+        "location": "Plano, Illinois, USA",
+        "yearCompleted": 1951,
+        "buildingType": "Residential House",
+        "primaryMaterials": [ "Steel", "Glass" ],
         "images": [
-            "https://placehold.co/1024x768/efefef/333?text=Project+Image+1",
-            "https://placehold.co/1024x768/efefef/333?text=Project+Image+2"
+            "/images/mies-van-der-rohe/farnsworth-house/image1.jpg",
+            "/images/mies-van-der-rohe/farnsworth-house/image2.jpg",
+            "/images/mies-van-der-rohe/farnsworth-house/image3.jpg"
         ],
-        "introductionAndContext": "To add a project, add its data to the 'notableProjects' array. Ensure you list all image paths explicitly in the 'images' array.",
-        "conceptualFramework": "Describe the project's conceptual framework.",
+        "introductionAndContext": "The Farnsworth House is an iconic work of modernist architecture, a one-room weekend retreat in a once-rural setting, located 55 miles southwest of Chicago's downtown. The steel and glass house was commissioned by Edith Farnsworth, M.D., a prominent Chicago nephrologist, as a place where she could engage in her hobbies—playing the violin, translating poetry, and enjoying nature.",
+        "conceptualFramework": "The house is conceived as a transparent enclosure, allowing its inhabitant to be fully immersed in the surrounding natural landscape. It represents the ultimate expression of Mies's 'less is more' philosophy, reducing architecture to its bare essentials: a simple frame, floor, and roof.",
         "architecturalAnalysis": {
-          "formAndStructure": "Analyze the form and structure.",
-          "materialityAndTectonics": "Analyze the materiality and tectonics.",
-          "lightAndSpace": "Analyze the use of light and space."
+          "formAndStructure": "The structure consists of eight wide-flange steel columns that support the roof and floor planes. The glass walls are suspended from this frame, creating a sense of weightlessness and complete transparency. The house is elevated five feet three inches off the ground, appearing to float above the floodplain of the Fox River.",
+          "materialityAndTectonics": "The palette is minimal: steel, glass, and travertine marble for the floors. The white-painted steel frame is meticulously detailed, with every weld ground smooth to create a seamless, machine-like perfection.",
+          "lightAndSpace": "With floor-to-ceiling glass on all four sides, the house is bathed in natural light. The interior is a single, uninterrupted space, with a central 'core' housing mechanicals, kitchen, and bathrooms, which subtly defines living areas without resorting to traditional walls."
         },
-        "significanceAndImpact": "Describe the project's significance and impact."
+        "significanceAndImpact": "The Farnsworth House is one of the most significant residential designs of the 20th century, a masterpiece of minimalism that has inspired countless architects. Its radical transparency and structural purity pushed the boundaries of domestic architecture."
+      },
+       {
+        "id": "seagram-building",
+        "projectName": "Seagram Building",
+        "architect": "Mies van der Rohe",
+        "location": "New York, New York, USA",
+        "yearCompleted": 1958,
+        "buildingType": "Skyscraper / Office Building",
+        "primaryMaterials": [ "Bronze", "Topaz Glass", "Concrete" ],
+        "images": [
+            "/images/mies-van-der-rohe/seagram-building/image1.jpg",
+            "/images/mies-van-der-rohe/seagram-building/image2.jpg"
+        ],
+        "introductionAndContext": "The Seagram Building, located on Park Avenue in Midtown Manhattan, is a landmark of corporate modernism. It was designed as the headquarters for the Canadian distillers Joseph E. Seagram & Sons. Mies collaborated with Philip Johnson on the interior spaces.",
+        "conceptualFramework": "The building's design embodies elegance, order, and rationality. Mies set the tower back from the street, creating a large, open granite plaza that was a radical gesture at the time, establishing a new paradigm for urban design by offering public space as a gift to the city.",
+        "architecturalAnalysis": {
+          "formAndStructure": "It's a 38-story skyscraper with a steel frame and a non-structural glass curtain wall. A key aesthetic feature is the use of bronze I-beams on the exterior. These vertical elements are purely decorative, yet they articulate the building's underlying structure and add a rich texture and vertical rhythm to the facade.",
+          "materialityAndTectonics": "The choice of materials—dark bronze, topaz-tinted glass, travertine, and marble—gives the building an aura of timeless luxury and permanence. The detailing is exceptionally precise, reflecting Mies's obsession with craft and quality.",
+          "lightAndSpace": "The tinted glass reduces glare while allowing ample light into the office spaces. The expansive lobby, with its high ceilings and minimal furnishing, creates a monumental sense of arrival. The plaza in front provides light and air not only for the building's occupants but for the entire neighborhood."
+        },
+        "significanceAndImpact": "The Seagram Building set the standard for the modern skyscraper. Its 'plaza and tower' form was widely imitated across the world, and it remains a benchmark for architectural elegance and urban sophistication."
       }
     ]
   }
