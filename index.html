@@ -247,10 +247,10 @@
             }
         }, [isSearching]);
         
-         useEffect(() => {
+        useEffect(() => {
             if (isSearching && searchInputRef.current && sizerRef.current) {
                 // Add a small buffer for the cursor
-                const newWidth = sizerRef.current.offsetWidth + 2;
+                const newWidth = sizerRef.current.offsetWidth + 4;
                 searchInputRef.current.style.width = `${newWidth}px`;
             } else if (searchInputRef.current) {
                 searchInputRef.current.style.width = '0px';
@@ -291,7 +291,6 @@
                     }
                     const data = await response.json();
                     setArchitectsData(data);
-                    setDisplayArchitects(data);
                     setAppStatus('ready');
                 } catch (e) {
                     console.error("Failed to load collection data:", e);
@@ -306,23 +305,38 @@
             loadData();
         }, []);
 
-
         const handleSearch = () => {
             if (!searchQuery.trim()) {
-                setDisplayArchitects(architectsData);
+                setDisplayArchitects([]);
                 return;
             }
+            const lowerCaseQuery = searchQuery.toLowerCase();
+            const results = architectsData
+                .filter(arch => arch.fullName.toLowerCase().includes(lowerCaseQuery))
+                .sort((a, b) => {
+                    const nameA = a.fullName.toLowerCase();
+                    const nameB = b.fullName.toLowerCase();
+                    const aStarts = nameA.startsWith(lowerCaseQuery);
+                    const bStarts = nameB.startsWith(lowerCaseQuery);
 
-            const results = architectsData.filter(arch => 
-                arch.fullName.toLowerCase().includes(searchQuery.toLowerCase())
-            );
+                    if (aStarts && !bStarts) return -1;
+                    if (!aStarts && bStarts) return 1;
+                    
+                    const aIndex = nameA.indexOf(lowerCaseQuery);
+                    const bIndex = nameB.indexOf(lowerCaseQuery);
+
+                    if (aIndex < bIndex) return -1;
+                    if (aIndex > bIndex) return 1;
+
+                    return nameA.localeCompare(nameB);
+                });
             setDisplayArchitects(results);
         };
         
         const handleClearSearch = () => {
             setIsSearching(false);
             setSearchQuery('');
-            setDisplayArchitects(architectsData);
+            setDisplayArchitects([]);
         };
         
         const handleSelectArchitect = (architect) => {
@@ -347,7 +361,7 @@
         if (appStatus === 'ready' && view === 'collection') {
             const mainClasses = `h-full flex flex-col items-center ${
                 isSearching 
-                    ? 'justify-start pt-12 md:pt-8' 
+                    ? 'justify-start pt-16 md:pt-12' 
                     : 'justify-center'
             }`;
 
@@ -364,7 +378,7 @@
                     {/* Main Content Area */}
                     <main className={mainClasses}>
                         <div 
-                            className="font-lekton text-5xl md:text-7xl font-light tracking-widest uppercase text-center mb-12"
+                            className={`font-lekton font-light tracking-widest uppercase text-center transition-all duration-500 ease-in-out ${isSearching ? 'text-2xl mb-8' : 'text-5xl md:text-7xl mb-12'}`}
                             onClick={() => { if (!isSearching) setIsSearching(true) }}
                         >
                             {isSearching ? (
@@ -375,11 +389,12 @@
                                         type="text"
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
-                                        className="bg-transparent outline-none p-0 border-0 text-left text-5xl md:text-7xl font-light"
+                                        className="bg-transparent outline-none p-0 border-0 text-left"
                                         style={{ caretColor: 'transparent', width: '0px' }}
+                                        placeholder="Search..."
                                     />
                                     {/* Sizer element for width calculation */}
-                                    <div ref={sizerRef} className="absolute top-0 left-0 invisible whitespace-pre -z-10 text-5xl md:text-7xl font-light">{searchQuery}</div>
+                                    <div ref={sizerRef} className="absolute top-0 left-0 invisible whitespace-pre -z-10">{searchQuery || 'Search...'}</div>
                                 </div>
                             ) : (
                                 <h2 className="cursor-pointer">
@@ -389,24 +404,32 @@
                         </div>
 
                         {isSearching && (
-                            <div className="w-full max-w-7xl flex-1 overflow-y-auto pb-8 animate-fade-in">
+                            <div className="w-full max-w-2xl mx-auto flex-1 overflow-y-auto pb-8 animate-fade-in">
                                 {architectsData.length > 0 ? (
-                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
-                                    {displayArchitects.length > 0 ? (
-                                        displayArchitects.map(arch => (
-                                            <div key={arch.id} onClick={() => handleSelectArchitect(arch)} className="cursor-pointer group">
-                                                {arch.image ?
-                                                    <img src={arch.image} alt={`Portrait of ${arch.fullName}`} className="w-full aspect-square object-cover transition-all duration-300 group-hover:grayscale group-hover:opacity-80" />
-                                                    : <div className="w-full aspect-square bg-gray-100 flex items-center justify-center text-gray-400 text-sm">No Image</div>
-                                                }
-                                                <p className="text-center mt-2 text-sm uppercase tracking-wider">{arch.fullName}</p>
+                                    <div>
+                                        {searchQuery.trim().length > 0 ? (
+                                            displayArchitects.length > 0 ? (
+                                                <div>
+                                                    {displayArchitects.map(arch => (
+                                                        <div key={arch.id} onClick={() => handleSelectArchitect(arch)} className="cursor-pointer group flex items-center space-x-6 p-4 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors duration-200">
+                                                            {arch.image ?
+                                                                <img src={arch.image} alt={`Portrait of ${arch.fullName}`} className="w-16 h-16 object-cover rounded-sm flex-shrink-0" />
+                                                                : <div className="w-16 h-16 bg-gray-100 flex items-center justify-center text-gray-400 text-xs rounded-sm flex-shrink-0">No Image</div>
+                                                            }
+                                                            <p className="text-base uppercase tracking-wider group-hover:text-black text-gray-700">{arch.fullName}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <div className="text-center text-gray-500 pt-8">
+                                                    <p>No architects found matching your search.</p>
+                                                </div>
+                                            )
+                                        ) : (
+                                            <div className="text-center text-gray-400 pt-8">
+                                                <p>Begin typing to search the archive.</p>
                                             </div>
-                                        ))
-                                    ) : (
-                                        <div className="col-span-full text-center text-gray-500">
-                                            <p>No architects found matching your search.</p>
-                                        </div>
-                                    )}
+                                        )}
                                     </div>
                                 ) : (
                                     <div className="text-center text-gray-500 bg-gray-50 p-6 rounded-md border border-gray-200">
