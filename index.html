@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -225,12 +224,23 @@
         const [searchQuery, setSearchQuery] = useState('');
         const [displayArchitects, setDisplayArchitects] = useState([]);
         const searchInputRef = useRef(null);
+        const sizerRef = useRef(null);
 
         useEffect(() => {
             if (isSearching) {
                 searchInputRef.current?.focus();
             }
         }, [isSearching]);
+        
+         useEffect(() => {
+            if (isSearching && searchInputRef.current && sizerRef.current) {
+                // Add a small buffer for the cursor
+                const newWidth = sizerRef.current.offsetWidth + 2;
+                searchInputRef.current.style.width = `${newWidth}px`;
+            } else if (searchInputRef.current) {
+                searchInputRef.current.style.width = '0px';
+            }
+        }, [searchQuery, isSearching]);
 
         useEffect(() => {
           const searchDebounce = setTimeout(() => {
@@ -320,8 +330,14 @@
         }
         
         if (appStatus === 'ready' && view === 'collection') {
+            const mainClasses = `absolute inset-0 flex flex-col items-center p-8 ${
+                isSearching 
+                    ? 'justify-start pt-24 md:justify-center md:pt-8' 
+                    : 'justify-center'
+            }`;
+
             return (
-                <div className="bg-[#FDFBF7] min-h-screen relative p-8 md:p-12 text-black overflow-hidden">
+                <div className="bg-[#FDFBF7] min-h-screen relative p-8 md:p-12 text-black">
                     {/* Top Left */}
                     <div className="absolute top-8 left-8 md:top-12 md:left-12 pl-3 border-l border-gray-300 text-xs uppercase tracking-wider text-left">
                         <p>Architecture</p><p>Design</p><p>&</p><p>Art</p>
@@ -331,23 +347,24 @@
                     <div className="absolute top-8 right-8 md:top-12 md:right-12 w-5 h-5 border-t border-r border-gray-300"></div>
                     
                     {/* Main Content Area */}
-                    <main className={`absolute inset-0 flex flex-col p-8 transition-all duration-500 ease-in-out ${isSearching ? 'justify-start pt-16 md:pt-24' : 'items-center justify-center'}`}>
-                        {/* Search / Title Area */}
+                    <main className={mainClasses}>
                         <div 
-                            className="font-lekton text-5xl md:text-7xl font-light tracking-widest uppercase text-center w-full"
+                            className="font-lekton text-5xl md:text-7xl font-light tracking-widest uppercase text-center mb-12"
                             onClick={() => { if (!isSearching) setIsSearching(true) }}
                         >
                             {isSearching ? (
-                                <div className="flex items-center justify-center relative w-full max-w-md mx-auto">
-                                    <span className="text-gray-400">_</span>
+                                <div className="flex items-center justify-center relative">
+                                    <span className="blink">_</span>
                                     <input
                                         ref={searchInputRef}
                                         type="text"
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
-                                        placeholder="Search architects"
-                                        className="bg-transparent outline-none p-0 border-b-2 border-black text-center text-4xl md:text-5xl font-light w-full flex-grow mx-2 placeholder-gray-400"
+                                        className="bg-transparent outline-none p-0 border-0 text-left text-5xl md:text-7xl font-light"
+                                        style={{ caretColor: 'transparent', width: '0px' }}
                                     />
+                                    {/* Sizer element for width calculation */}
+                                    <div ref={sizerRef} className="absolute top-0 left-0 invisible whitespace-pre -z-10 text-5xl md:text-7xl font-light">{searchQuery}</div>
                                 </div>
                             ) : (
                                 <h2 className="cursor-pointer">
@@ -355,10 +372,9 @@
                                 </h2>
                             )}
                         </div>
-                        
-                        {/* Results Grid */}
+
                         {isSearching && (
-                            <div className="w-full max-w-7xl px-4 md:px-12 mt-12 animate-fade-in overflow-y-auto flex-grow">
+                            <div className="w-full max-w-7xl px-8 md:px-12 animate-fade-in">
                                 {architectsData.length > 0 ? (
                                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
                                     {displayArchitects.length > 0 ? (
