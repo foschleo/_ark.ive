@@ -331,14 +331,14 @@
         }
         
         if (appStatus === 'ready' && view === 'collection') {
-            const mainClasses = `absolute inset-0 flex flex-col items-center p-8 ${
+            const mainClasses = `h-full flex flex-col items-center ${
                 isSearching 
-                    ? 'justify-start pt-24 md:justify-center md:pt-8' 
+                    ? 'justify-start pt-12 md:pt-8' 
                     : 'justify-center'
             }`;
 
             return (
-                <div className="bg-[#FDFBF7] min-h-screen relative p-8 md:p-12 text-black">
+                <div className="bg-[#FDFBF7] h-screen overflow-hidden relative p-8 md:p-12 text-black">
                     {/* Top Left */}
                     <div className="absolute top-8 left-8 md:top-12 md:left-12 pl-3 border-l border-gray-300 text-xs uppercase tracking-wider text-left">
                         <p>Architecture</p><p>Design</p><p>&</p><p>Art</p>
@@ -375,7 +375,7 @@
                         </div>
 
                         {isSearching && (
-                            <div className="w-full max-w-7xl px-8 md:px-12 animate-fade-in">
+                            <div className="w-full max-w-7xl flex-1 overflow-y-auto pb-8 animate-fade-in">
                                 {architectsData.length > 0 ? (
                                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
                                     {displayArchitects.length > 0 ? (
